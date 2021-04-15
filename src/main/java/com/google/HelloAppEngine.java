@@ -1,17 +1,24 @@
 package com.google;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.blobstore.BlobKey;
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.google.appengine.api.images.ImagesService;
+import com.google.appengine.api.images.ImagesServiceFactory;
+import com.google.appengine.api.images.ServingUrlOptions;
 import com.google.cloud.vision.v1.AnnotateImageRequest;
 import com.google.cloud.vision.v1.AnnotateImageResponse;
 import com.google.cloud.vision.v1.BatchAnnotateImagesResponse;
@@ -19,73 +26,81 @@ import com.google.cloud.vision.v1.EntityAnnotation;
 import com.google.cloud.vision.v1.Feature;
 import com.google.cloud.vision.v1.Image;
 import com.google.cloud.vision.v1.ImageAnnotatorClient;
-import com.google.cloud.vision.v1.Feature.Type;
 import com.google.protobuf.ByteString;
 
 @WebServlet(
     name = "HelloAppEngine",
-    urlPatterns = {"/hello"}
+    urlPatterns = {"/upload"}
 )
 public class HelloAppEngine extends HttpServlet {
+	private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) 
-      throws IOException {
-	  try (ImageAnnotatorClient vision = ImageAnnotatorClient.create()) {
-			 
-			 System.out.println("Inside try Reached here!!!!!!!!!!");
+  public void doPost(HttpServletRequest req, HttpServletResponse res) 
+      throws IOException, ServletException {
+	  System.out.println("Inside do post");
+	  Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(req);
+      List<BlobKey> blobKeys = blobs.get("fileName");
+      if (blobKeys == null || blobKeys.isEmpty()) {
+          res.sendRedirect("/");
+      } else {
+      	byte[] blobBytes = getBlobBytes(blobKeys.get(0));
+  		List<EntityAnnotation> imageLabels = getImageLabels(blobBytes);
+  		String imageUrl = getUploadedFileUrl(blobKeys.get(0));
+  		req.setAttribute("imageUrl", imageUrl);
+  		req.setAttribute("imageLabels", imageLabels);
+  		RequestDispatcher dispatcher = getServletContext()
+  			      .getRequestDispatcher("/displayLabels.jsp");
+  			    dispatcher.forward(req, res);	
+      } }
+  private List<EntityAnnotation> getImageLabels(byte[] imgBytes) throws IOException {
+		ByteString byteString = ByteString.copyFrom(imgBytes);
+		Image image = Image.newBuilder().setContent(byteString).build();
 
-		   // The path to the image file to annotate
-		   String fileName = "/Users/anuparmar/Desktop/Landmark.png";
+		Feature feature = Feature.newBuilder().setType(Feature.Type.LABEL_DETECTION).build();
+		AnnotateImageRequest request =
+				AnnotateImageRequest.newBuilder().addFeatures(feature).setImage(image).build();
+		List<AnnotateImageRequest> requests = new ArrayList<>();
+		requests.add(request);
 
-		   // Reads the image file into memory
-		   Path path = Paths.get(fileName);
-		   byte[] data = Files.readAllBytes(path);
-		   ByteString imgBytes = ByteString.copyFrom(data);
+		ImageAnnotatorClient client = ImageAnnotatorClient.create();
+		BatchAnnotateImagesResponse batchResponse = client.batchAnnotateImages(requests);
+		client.close();
+		List<AnnotateImageResponse> imageResponses = batchResponse.getResponsesList();
+		AnnotateImageResponse imageResponse = imageResponses.get(0);
 
-		   // Builds the image annotation request
-		   List<AnnotateImageRequest> requests = new ArrayList<>();
-		   Image img = Image.newBuilder().setContent(imgBytes).build();
-		   Feature feat = Feature.newBuilder().setType(Type.LABEL_DETECTION).build();
-		   AnnotateImageRequest request1 =
-		       AnnotateImageRequest.newBuilder().addFeatures(feat).setImage(img).build();
-		   requests.add(request1);
+		if (imageResponse.hasError()) {
+			System.err.println("Error getting image labels: " + imageResponse.getError().getMessage());
+			return null;
+		}
+		
+		return imageResponse.getLabelAnnotationsList();
+	}
+  
+  private String getUploadedFileUrl(BlobKey blobKey){
+		ImagesService imagesService = ImagesServiceFactory.getImagesService();
+		ServingUrlOptions options = ServingUrlOptions.Builder.withBlobKey(blobKey);
+		return imagesService.getServingUrl(options);
+	}
+  
+  private byte[] getBlobBytes(BlobKey blobKey) throws IOException {
+		BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+		ByteArrayOutputStream outputBytes = new ByteArrayOutputStream();
 
-		   // Performs label detection on the image file
-		   BatchAnnotateImagesResponse response1 = vision.batchAnnotateImages(requests);
-		   List<AnnotateImageResponse> responses = response1.getResponsesList();
+		int fetchSize = BlobstoreService.MAX_BLOB_FETCH_SIZE;
+		long currentByteIndex = 0;
+		boolean continueReading = true;
+		while (continueReading) {
+			byte[] b = blobstoreService.fetchData(blobKey, currentByteIndex, currentByteIndex + fetchSize - 1);
+			outputBytes.write(b);
+			if (b.length < fetchSize) {
+				continueReading = false;
+			}
 
-		   for (AnnotateImageResponse res : responses) {
-		     if (res.hasError()) {
-		       System.out.format("Error: %s%n", res.getError().getMessage());
-		       return;
-		     }
+			currentByteIndex += fetchSize;
+		}
 
-		     for (EntityAnnotation annotation : res.getLabelAnnotationsList()) {
-		       annotation
-		           .getAllFields()
-		           .forEach((k, v) -> {
-					try {
-						if(k.equals("google.cloud.vision.v1.EntityAnnotation.description"))
-						{
-						response.getWriter().println( v.toString());
-						response.getWriter().println();
-						}
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				});
-		       
-		       //response.getWriter().print(k + v.toString());
-		     }
-		   }
-		 }
+		return outputBytes.toByteArray();
+	}
 
-    response.setContentType("text/plain");
-    response.setCharacterEncoding("UTF-8");
-
-   // response.getWriter().print("Hello App Engine!\r\n");
-
-  }
 }
