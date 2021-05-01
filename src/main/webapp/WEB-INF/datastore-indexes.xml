@@ -1,0 +1,9 @@
+<datastore-indexes autoGenerate="true">
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="image" ancestor="false" source="auto">
+        <property name="userId" direction="asc"/>
+        <property name="label" direction="asc"/>
+    </datastore-index>
+
+</datastore-indexes>
