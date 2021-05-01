@@ -1,72 +1,53 @@
 package com.google;
 
-import com.google.appengine.repackaged.com.google.common.collect.Lists;
-import com.google.auth.oauth2.GoogleCredentials;
 
-//Imports the Google Cloud client library
+import java.io.IOException;
 
-import com.google.cloud.vision.v1.AnnotateImageRequest;
-import com.google.cloud.vision.v1.AnnotateImageResponse;
-import com.google.cloud.vision.v1.BatchAnnotateImagesResponse;
-import com.google.cloud.vision.v1.EntityAnnotation;
-import com.google.cloud.vision.v1.Feature;
-import com.google.cloud.vision.v1.Feature.Type;
-import com.google.cloud.vision.v1.Image;
-import com.google.cloud.vision.v1.ImageAnnotatorClient;
-import com.google.protobuf.ByteString;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import com.google.cloud.datastore.Datastore;
+import com.google.cloud.datastore.DatastoreOptions;
+import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.Key;
 
-import io.grpc.Context.Storage;
+@WebServlet(
+	    name = "QuickstartSample",
+	    urlPatterns = {"/hello"}
+	)
 
-import java.io.FileInputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+public class QuickstartSample extends HttpServlet {
+	    
+	  @Override
+	  public void doPost(HttpServletRequest req, HttpServletResponse res) 
+	      throws IOException, ServletException {
+    // Instantiates a client
+	  System.out.println("Added by Anu Reached in main ");
+    Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 
-public class QuickstartSample {
-public static void sample() throws Exception {    
-	
-	System.out.println("Reached here!!!!!!!!!!");
- // Initialize client that will be used to send requests. This client only needs to be created
- // once, and can be reused for multiple requests. After completing all of your requests, call
- // the "close" method on the client to safely clean up any remaining background resources.
- try (ImageAnnotatorClient vision = ImageAnnotatorClient.create()) {
-	 
-	 System.out.println("Inside try Reached here!!!!!!!!!!");
+    // The kind for the new entity
+    String kind = "Task";
+    // The name/ID for the new entity
+    String name = "sampletask1";
+    // The Cloud Datastore key for the new entity
+    Key taskKey = datastore.newKeyFactory().setKind(kind).newKey(name);
 
-   // The path to the image file to annotate
-   String fileName = "/Users/anuparmar/Desktop/Landmark.png";
+    // Prepares the new entity
+    Entity task = Entity.newBuilder(taskKey)
+        .set("description", "Buy milk")
+        .build();
 
-   // Reads the image file into memory
-   Path path = Paths.get(fileName);
-   byte[] data = Files.readAllBytes(path);
-   ByteString imgBytes = ByteString.copyFrom(data);
+    // Saves the entity
+    datastore.put(task);
 
-   // Builds the image annotation request
-   List<AnnotateImageRequest> requests = new ArrayList<>();
-   Image img = Image.newBuilder().setContent(imgBytes).build();
-   Feature feat = Feature.newBuilder().setType(Type.LABEL_DETECTION).build();
-   AnnotateImageRequest request =
-       AnnotateImageRequest.newBuilder().addFeatures(feat).setImage(img).build();
-   requests.add(request);
+    System.out.printf("Saved %s: %s%n", task.getKey().getName(), task.getString("description"));
 
-   // Performs label detection on the image file
-   BatchAnnotateImagesResponse response = vision.batchAnnotateImages(requests);
-   List<AnnotateImageResponse> responses = response.getResponsesList();
+    //Retrieve entity
+    Entity retrieved = datastore.get(taskKey);
 
-   for (AnnotateImageResponse res : responses) {
-     if (res.hasError()) {
-       System.out.format("Error: %s%n", res.getError().getMessage());
-       return;
-     }
+    System.out.printf("Retrieved %s: %s%n", taskKey.getName(), retrieved.getString("description"));
 
-     for (EntityAnnotation annotation : res.getLabelAnnotationsList()) {
-       annotation
-           .getAllFields()
-           .forEach((k, v) -> System.out.format("%s : %s%n", k, v.toString()));
-     }
-   }
- }
-}
-}
+  }
+  }

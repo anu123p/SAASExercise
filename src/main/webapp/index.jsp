@@ -1,32 +1,26 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    
-     <%@ page import="com.google.appengine.api.blobstore.BlobstoreServiceFactory" %>
-<%@ page import="com.google.appengine.api.blobstore.BlobstoreService" %>
-
-<%
-    BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
-%>
-
-
-<!DOCTYPE html>
+<%@page import="java.util.Map"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"%>
+ 
 <html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
- <body style="background-color:#FFDFDF;">
-	  <h1><span>Google Cloud Vision API</span></h1>
-        <form action="<%= blobstoreService.createUploadUrl("/upload") %>" method="post" enctype="multipart/form-data">
-           
-              <div class="form-group files">
-               
-                <input type="file" name="fileName" class="form-control" multiple="">
-                 <input type="submit" class="" value="Click here to Submit">
-              </div>
-              
+<body>
+  
+   
+  <%
             
-          </form>
-        
-    </body>
+        	Map<String,List<String>> result = (Map<String,List<String>>)request.getAttribute("imagesLink");
+        	for (Map.Entry<String,List<String>> entry : result.entrySet()) {
+        		out.println("<h2>" + entry.getKey() +"</td>");
+        		List<String> images = entry.getValue();
+        		for(int i=0; i<images.size();i++){
+        			out.println("<img style=\"height: 200px;width: auto;border: solid;\" class=\"img-responsive images\" src=" + images.get(i) + ">");
+        		}
+        		
+        		
+        	}
+           
+        %>
+   
+
+</body>
 </html>
