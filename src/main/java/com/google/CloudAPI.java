@@ -39,10 +39,9 @@ public class CloudAPI extends HttpServlet {
 		String key = (String)request.getParameter("Label");
 		String userID = (String)request.getParameter("userID1");
 		String keyUpper = key.substring(0, 1).toUpperCase() + key.substring(1);
-//		String key = "People in nature";
-//		String keyUpper = key.substring(0, 1).toUpperCase() + key.substring(1);
+		System.out.println("Inside do post of cloud API : userID " + userID);
 		List<String> searchResults = retrieveImagesWithKey(keyUpper,userID);
-		request.setAttribute("labelAttribute", key + "is here!!");
+		request.setAttribute("labelAttribute", key);
         request.setAttribute("imagesLink", searchResults);
         
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("search.jsp");
@@ -57,7 +56,7 @@ public class CloudAPI extends HttpServlet {
 		 Query<Entity> query = Query.newEntityQueryBuilder()
 			        .setKind("image")
 			        .setFilter(CompositeFilter.and(
-			            PropertyFilter.eq("label", key))
+			            PropertyFilter.eq("label", key),PropertyFilter.eq("userId", userID))
 			        		)
 			        .build();
 	
@@ -113,7 +112,6 @@ public class CloudAPI extends HttpServlet {
 			System.out.println(task.getValue("category").get().toString());
 			System.out.println(task.getValue("label").get());
 			System.out.println(task.getValue("url").get());
-			//data.put(, task.getValue("category").get().toString());
 		}
 		return data;
 
