@@ -1,0 +1,407 @@
+* {box-sizing: border-box}
+body {font-family: Verdana, sans-serif; margin:0}
+.mySlides {display: none}
+img {vertical-align: middle;}
+
+/* Slideshow container */
+.slideshow-container {
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+}
+
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -22px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+/* Caption text */
+.text {
+  color: #000000;
+  font-size: 40px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active, .dot:hover {
+  background-color: #717171;
+}
+
+.background{
+background-color: #ffffff;
+}
+
+/* Fading animation */
+.fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 1.5s;
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@-webkit-keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+@keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+/* On smaller screens, decrease text size */
+@media only screen and (max-width: 300px) {
+  .prev, .next,.text {font-size: 11px}
+}
+* {box-sizing: border-box}
+body {font-family: Verdana, sans-serif; margin:0}
+.mySlides {display: none}
+img {vertical-align: middle;}
+
+/* Slideshow container */
+.slideshow-container {
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+}
+
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -22px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+/* Caption text */
+.text {
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active, .dot:hover {
+  background-color: #717171;
+}
+
+/* Fading animation */
+.fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 1.5s;
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@-webkit-keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+@keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+/* On smaller screens, decrease text size */
+@media only screen and (max-width: 300px) {
+  .prev, .next,.text {font-size: 11px}
+}
+
+.button {
+  padding: 15px 25px;
+  font-size: 24px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #04AA6D;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.button:hover {background-color: #3e8e41}
+
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+body {
+	background-color: #dad5ce;
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
+	position: relative;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+form.example input[type=text] {
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+  width: 80%;
+  background: #f1f1f1;
+}
+
+form.example button {
+  float: left;
+  width: 20%;
+  padding: 10px;
+  background: #2196F3;
+  color: white;
+  font-size: 17px;
+  border: 1px solid grey;
+  border-left: none;
+  cursor: pointer;
+}
+
+form.example button:hover {
+  background: #0b7dda;
+}
+
+form.example::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.wrapper {
+	background-color: #fff;
+	padding: 25px;
+	border-radius: 5px;
+	width: auto;
+	max-width: 100%;
+	margin: 50px auto;
+	align-self: center;
+	box-sizing: border-box;
+}
+
+header {
+	border-bottom: 1px solid #ddd;
+	padding-bottom: 10px;
+	margin-bottom: 20px;
+	display: flex;
+}
+
+h2 {
+	flex: 1;
+	padding: 0;
+	margin: 0;
+	font-size: 16px;
+	letter-spacing: 1px;
+	font-weight: 700;
+	color: #7A7B7F;
+}
+
+header span {
+	flex: 1;
+	text-align: right;
+	font-size: 12px;
+	color: #999;
+}
+
+section {
+	display: none;
+}
+
+section.active {
+	display: block;
+}
+
+section input, section textarea {
+	display: block;
+	width: 100%;
+	box-sizing: border-box;
+	border: 1px solid #ddd;
+	outline: 0;
+	background-color: #F5F7FA;
+	padding: 10px;
+	margin-bottom: 10px;
+	letter-spacing: 1.4px;
+}
+
+section textarea {
+	min-height: 200px;
+}
+
+section select {
+	display: none;
+}
+
+.images {
+	display: flex;
+	flex-wrap: wrap;
+	margin-top: 20px;
+}
+
+.images .img:hover span {
+	display: block;
+	color: #fff;
+}
+
+@media screen and (max-width: 400px) {
+	.wrapper {
+		margin-top: 0;
+	}
+	header {
+		flex-direction: column;
+	}
+	header span {
+		text-align: left;
+		margin-top: 10px;
+	}
+	.ways li, section input, section textarea, .select-option .head,
+		.select-option .option div {
+		font-size: 8px;
+	}
+	.images .img, .images .pic {
+		flex-basis: 100%;
+		margin-right: 0;
+	}
+}
+
+.wrapper footer ul {
+	margin: 0;
+	margin-top: 30px;
+	display: flex;
+	list-style: none;
+	padding: 0;
+}
+
+.wrapper footer ul li {
+	flex: 1;
+}
+
+.wrapper footer li span {
+	text-transform: capitalize;
+	cursor: pointer;
+}
+
+.wrapper footer li:first-child {
+	color: #999;
+	text-align: left;
+	font-size: 12px;
+}
+
+.wrapper footer li:first-child span {
+	display: inline-block;
+	border-bottom: 1px solid #ddd;
+}
+
+.wrapper footer li:last-child {
+	text-align: right;
+}
+
+.wrapper footer li:last-child span {
+	background-color: #22A4E6;
+	padding: 10px 20px;
+	color: #fff;
+	border-radius: 3px;
+}
+
+@keyframes fadeIn { 0% {
+	opacity: 0;
+}
+100%
+{
+opacity
+:
+1;
+}
+}

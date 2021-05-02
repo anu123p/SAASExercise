@@ -5,6 +5,27 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YS52GEWSST"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-YS52GEWSST');
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NGYP65PSGB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NGYP65PSGB');
+</script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 * {box-sizing: border-box}
@@ -14,9 +35,10 @@ img {vertical-align: middle;}
 
 /* Slideshow container */
 .slideshow-container {
-  max-width: 1000px;
+ max-width: 800px;
   position: relative;
-  margin: auto;
+  margin: auto; 
+
 }
 
 /* Next & previous buttons */
@@ -78,6 +100,10 @@ img {vertical-align: middle;}
   transition: background-color 0.6s ease;
 }
 
+.background{
+background-color: #ffffff;
+}
+
 .active, .dot:hover {
   background-color: #717171;
 }
@@ -88,6 +114,14 @@ img {vertical-align: middle;}
   -webkit-animation-duration: 1.5s;
   animation-name: fade;
   animation-duration: 1.5s;
+}
+.imagestyle{
+  
+    width:  100%;
+    object-fit: contain;
+    max-height:500px;
+    
+
 }
 
 @-webkit-keyframes fade {
@@ -101,14 +135,12 @@ img {vertical-align: middle;}
 }
 
 /* On smaller screens, decrease text size */
-@media only screen and (max-width: 300px) {
+/* @media only screen and (max-width: 300px) {
   .prev, .next,.text {font-size: 11px}
-}
+} */
 </style>
 </head>
-<body>
-
-
+<body background ="../css/background.jpeg" class = "background">
 
 
 <div class="slideshow-container">
@@ -117,16 +149,16 @@ img {vertical-align: middle;}
         	List<String> result = (List<String>)request.getAttribute("imagesLink");
         	if(result.size()==0)
         	{
-        		out.println("<center> <h3> No Images Found with label : " + label + "</h3></center>");
+        		out.println("<center> <h3> No Images Found with label : " + label.toUpperCase() + "</h3></center>");
         	}
         	else
         	{
-        		out.println("<center> <h3>" + result.size() + " Images Found with label : " + label + "</h3></center>");
+        		out.println("<center> <h3>" + result.size() + " Images Found with label : " + label.toUpperCase() + "</h3></center>");
         		for(int i=0; i<result.size();i++){
         			out.println("<div class=\"mySlides fade\">");
         			out.println("<div class=\"numbertext\">"+ (i+1) + "/" +(result.size())+ "</div>");
-        			out.println("<img style=\"width:100%\" class=\"img-responsive images\" src=" + result.get(i) + ">");
-        			out.println("<div class=\"text\">" + label + "</div>");
+        			out.println("<img style =\"width:800px;height:500px\" align=\"middle\" src=" + result.get(i) + ">");
+        			out.println("<div class=\"text\"> <b> " + label.toUpperCase() + "</b> </div>");
         			out.println("</div>");
         		} 
         		
@@ -139,6 +171,7 @@ img {vertical-align: middle;}
 
 </div>
 <br>
+
 
 <div style="text-align:center">
 

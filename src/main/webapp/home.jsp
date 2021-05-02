@@ -10,13 +10,34 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <html>
 <head>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YS52GEWSST"></script>
 <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-322HJRMC6C');
-    </script>
-   
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('event', 'screen_view', {
+	  'app_name': 'myAppName',
+	  'screen_name' : 'Home'
+	});
+
+  gtag('config', 'G-YS52GEWSST');
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NGYP65PSGB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('event', 'screen_view', {
+	  'app_name': 'myAppName',
+	  'screen_name' : 'Home'
+	});
+
+  gtag('config', 'G-NGYP65PSGB');
+</script>
 
 <link rel="stylesheet" href="./css/index.css" type="text/css" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -165,6 +186,9 @@ section select {
 	display: block;
 	color: #fff;
 }
+.app-name{
+color:white;
+}
 
 @media screen and (max-width: 400px) {
 	.wrapper {
@@ -186,6 +210,7 @@ section select {
 		margin-right: 0;
 	}
 }
+
 
 .wrapper footer ul {
 	margin: 0;
@@ -241,7 +266,7 @@ opacity
 </style>
 </head>
 
-<body>
+<body background ="../css/facebook.jpeg" class = "background">
 	<script>
     // This is called with the results from from FB.getLoginStatus().
     function statusChangeCallback(response) {
