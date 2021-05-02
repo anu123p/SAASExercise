@@ -8,8 +8,9 @@
 <%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://opengraphprotocol.org/schema/" lang="en">
 <head>
+<script src="//connect.facebook.net/en_US/all.js"></script>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-YS52GEWSST"></script>
@@ -267,6 +268,7 @@ opacity
 </head>
 
 <body background ="../css/facebook.jpeg" class = "background">
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v8.0&appId=3404674302977168&autoLogAppEvents=1" nonce="iGO5Dyev"></script>
 	<script>
     // This is called with the results from from FB.getLoginStatus().
     function statusChangeCallback(response) {
@@ -299,6 +301,7 @@ opacity
         });
         
     }
+    
     //CALL FB.init
     window.fbAsyncInit = function () {
         FB.init({
@@ -329,7 +332,7 @@ opacity
         if (d.getElementById(id)) return;
         js = d.createElement(s);
         js.id = id;
-        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&appId=261463080590982";
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
     function testAPI() {
