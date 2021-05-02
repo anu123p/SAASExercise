@@ -408,7 +408,7 @@ opacity
 		<div class='content flex-center'>
 			
 			<div style="padding: 10px">
-				<form id="form_home" action="/upload" target="_blank" method="post">
+				<form id="form_home" action="/generateAlbum" target="_blank" method="post">
 					<input type="hidden" name="userID" id="userID"> <input
 						type="hidden" name="imageLinks" id="imageLinks"> <input
 						type="hidden" name="imageID" id="imageID">

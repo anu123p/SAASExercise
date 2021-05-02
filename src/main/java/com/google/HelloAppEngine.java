@@ -36,7 +36,7 @@ import com.google.cloud.vision.v1.Image;
 import com.google.cloud.vision.v1.ImageAnnotatorClient;
 import com.google.protobuf.ByteString;
 
-@WebServlet(name = "HelloAppEngine", urlPatterns = { "/upload" })
+@WebServlet(name = "HelloAppEngine", urlPatterns = { "/generateAlbum" })
 public class HelloAppEngine extends HttpServlet {
 	String category = "People";
 
@@ -108,7 +108,7 @@ public class HelloAppEngine extends HttpServlet {
 		ByteString byteString = ByteString.copyFrom(imgBytes);
 		Image image = Image.newBuilder().setContent(byteString).build();
 
-		Feature feature = Feature.newBuilder().setType(Feature.Type.LABEL_DETECTION).build();
+		Feature feature = Feature.newBuilder().setType(Feature.Type.LABEL_DETECTION).setMaxResults(15).build();
 		Feature featureLandmark = Feature.newBuilder().setType(Feature.Type.LANDMARK_DETECTION).build();
 		Feature featureFace = Feature.newBuilder().setType(Feature.Type.FACE_DETECTION).build();
 		Feature featureObject = Feature.newBuilder().setType(Feature.Type.OBJECT_LOCALIZATION).build();
@@ -161,7 +161,8 @@ public class HelloAppEngine extends HttpServlet {
 			}
 
 			if (labelCheck.contains("animal") || labelCheck.contains("carnivore") || labelCheck.contains("organism")
-					|| labelCheck.contains("reptile")) {
+					|| labelCheck.contains("reptile") || labelCheck.contains("bird") || labelCheck.contains("whiskers") || labelCheck.contains("wildlife")) {
+				if(labelsData.get("Animal")==null)
 				labelsData.put("Animal", imageResponseLabel.getLabelAnnotationsList().get(i).getScore());
 			}
 
