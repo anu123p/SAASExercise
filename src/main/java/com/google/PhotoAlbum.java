@@ -36,10 +36,17 @@ import com.google.cloud.vision.v1.Image;
 import com.google.cloud.vision.v1.ImageAnnotatorClient;
 import com.google.protobuf.ByteString;
 
+/**
+ * This is a java class to handle the request from /generateAlbum url of our application.
+ *
+ */
 @WebServlet(name = "PhotoAlbum", urlPatterns = { "/generateAlbum" })
 public class PhotoAlbum extends HttpServlet {
 	String category = "People";
 
+	/**
+	 *This method handles the post request triggered by /home.jsp and returns map of image url and category.
+	 */
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 
@@ -91,6 +98,12 @@ public class PhotoAlbum extends HttpServlet {
 
 	}
 
+	/**
+	 * Downloads the file from image url and return the byte array of the image.
+	 * @param url
+	 * @return
+	 * @throws Exception
+	 */
 	public byte[] downloadFile(URL url) throws Exception {
 		try (InputStream in = url.openStream()) {
 			byte[] bytes = IOUtils.toByteArray(in);
@@ -98,8 +111,15 @@ public class PhotoAlbum extends HttpServlet {
 		}
 	}
 
+	/**
+	 * This method processes the image by calling Google Vision Api, and return the category on the basis of the LABEL_DETECTION, 
+	 * LANDMARK_DETECTION, FACE_DETECTION, OBJECT_LOCALIZATION features.`
+	 * @param imgBytes
+	 * @return
+	 * @throws IOException
+	 */
 	private String getImageCategory(byte[] imgBytes) throws IOException {
-		// boolean landscape =false ;
+		
 		System.out.println("added by anu : inside image category");
 		Map<String, Float> labelsData = new HashMap();
 		boolean categorySet = false;
@@ -189,8 +209,7 @@ public class PhotoAlbum extends HttpServlet {
 			else
 				category = (String) sortedByValue.keySet().toArray()[0];
 		}
-		// System.out.println("Added by ANU labels: "+
-		// imageResponseLabel.getLabelAnnotationsList());
+		
 		System.out.println("Added by ANU category Final: " + category);
 
 		if (imageResponseLabel.hasError()) {
@@ -200,6 +219,14 @@ public class PhotoAlbum extends HttpServlet {
 		return category;
 	}
 
+	/**
+	 * This method add the metadata(image id, url, category, userid, label) of the every image into the Google datastore.
+	 * @param url
+	 * @param imageId
+	 * @param category
+	 * @param userId
+	 * @param labels
+	 */
 	private void addData(String url, String imageId, String category, String userId, List<String> labels) {
 
 		Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
@@ -229,6 +256,12 @@ public class PhotoAlbum extends HttpServlet {
 		System.out.printf("Retrieved %s: %s%n", taskKey.getName(), retrieved.getString("category"));
 	}
 
+	/**
+	 * This method processes the image by calling Google Vision Api, and return the List of labels.
+	 * @param imgBytes
+	 * @return
+	 * @throws IOException
+	 */
 	private List<String> getImageLabels(byte[] imgBytes) throws IOException {
 		ByteString byteString = ByteString.copyFrom(imgBytes);
 		Image image = Image.newBuilder().setContent(byteString).build();
