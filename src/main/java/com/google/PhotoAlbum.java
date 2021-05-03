@@ -36,8 +36,8 @@ import com.google.cloud.vision.v1.Image;
 import com.google.cloud.vision.v1.ImageAnnotatorClient;
 import com.google.protobuf.ByteString;
 
-@WebServlet(name = "HelloAppEngine", urlPatterns = { "/generateAlbum" })
-public class HelloAppEngine extends HttpServlet {
+@WebServlet(name = "PhotoAlbum", urlPatterns = { "/generateAlbum" })
+public class PhotoAlbum extends HttpServlet {
 	String category = "People";
 
 	@Override

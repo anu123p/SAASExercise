@@ -77,9 +77,6 @@ public class CloudAPI extends HttpServlet {
 		return searchResults;
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-	}
 
 	public static Map<String, List<String>> retrieveImages(Datastore datastore, String userId) {
 
@@ -150,13 +147,6 @@ public class CloudAPI extends HttpServlet {
 
 		differences.forEach(k -> datastore.delete(datastore.newKeyFactory().setKind("image").newKey(k)));
 
-	}
-
-	private static byte[] downloadFile(URL url) throws Exception {
-		try (InputStream in = url.openStream()) {
-			byte[] bytes = IOUtils.toByteArray(in);
-			return bytes;
-		}
 	}
 
 }
