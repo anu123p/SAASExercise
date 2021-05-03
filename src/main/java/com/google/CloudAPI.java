@@ -28,12 +28,25 @@ import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.datastore.StructuredQuery.CompositeFilter;
 import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
 
+
+
+/**
+ * This is a java class which contains all the method to Google Datastore like retrieveImages, checkDeletedImages etc.
+ *
+ */
 @MultipartConfig
 @WebServlet(name = "CloudAPI", urlPatterns = { "/search" })
 public class CloudAPI extends HttpServlet {
 	public CloudAPI() {
 	}
 
+	
+
+	/**
+	 * This method handles the post request triggered by /search.jsp and returns list of image url and search key
+	 *
+	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("Inside do post of cloud API");
 		String key = (String)request.getParameter("Label");
@@ -46,11 +59,16 @@ public class CloudAPI extends HttpServlet {
         
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("search.jsp");
  
-        requestDispatcher.forward(request, response);
-		
-		
+        requestDispatcher.forward(request, response);		
 }
 
+
+	/**
+	 * This method gets image data from Google datastore on the basis of the search key given in search.jsp for user with id 'userID'
+	 * @param key
+	 * @param userID
+	 * @return
+	 */
 	private List<String> retrieveImagesWithKey(String key, String userID) {
 		Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 		 Query<Entity> query = Query.newEntityQueryBuilder()
@@ -78,6 +96,13 @@ public class CloudAPI extends HttpServlet {
 	}
 
 
+
+	/**
+	 * This method gets all images from Google datastore for user with id 'userID'
+	 * @param datastore
+	 * @param userId
+	 * @return
+	 */
 	public static Map<String, List<String>> retrieveImages(Datastore datastore, String userId) {
 
 		Query<Entity> query = Query.newEntityQueryBuilder().setKind("image")
@@ -114,6 +139,12 @@ public class CloudAPI extends HttpServlet {
 
 	}
 
+	/**
+	 * This method returns true if image is present in Google Datastore.
+	 * @param datastore
+	 * @param imageId
+	 * @return
+	 */
 	public static boolean checkIfImageExists(Datastore datastore, String imageId) {
 		String kind = "image";
 		// The name/ID for the new entity
@@ -128,6 +159,12 @@ public class CloudAPI extends HttpServlet {
 		return true;
 	}
 
+	/**
+	 * This method deletes images in datastore if image is not present in the list of images retrieved from facebook.
+	 * @param datastore
+	 * @param imageId
+	 * @param userId
+	 */
 	public static void checkDeletedImages(Datastore datastore, List<String> imageId, String userId) {
 		Query<Entity> query = Query.newEntityQueryBuilder().setKind("image")
 				.setFilter(PropertyFilter.eq("userId", userId)).build();

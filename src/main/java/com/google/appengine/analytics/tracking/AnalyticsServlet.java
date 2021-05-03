@@ -14,6 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.http.client.utils.URIBuilder;
 
+/**
+ * 
+ *
+ */
 @SuppressWarnings("serial")
 // With @WebServlet annotation the webapp/WEB-INF/web.xml is no longer required.
 @WebServlet(
@@ -26,7 +30,7 @@ public class AnalyticsServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws IOException, ServletException {
-    //String trackingId = System.getenv("GA_TRACKING_ID");
+    
     URIBuilder builder = new URIBuilder();
     builder
         .setScheme("http")
